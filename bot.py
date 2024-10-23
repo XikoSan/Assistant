@@ -1,10 +1,10 @@
 
-import openai
+from openai import OpenAI
 import telebot
 from config import BOT_TOKEN, OPENAI_APY_KEY
 
 bot = telebot.TeleBot(BOT_TOKEN)
-openai.api_key = OPENAI_APY_KEY
+client = OpenAI(api_key=OPENAI_APY_KEY)
 
 
 # Greetings
@@ -24,22 +24,15 @@ def handle_message(message):
 # Function generate GPT response
 def generate_gpt_response(user_input):
     try:
-        response = openai.Completion.create(
-            engine="text-davinci-003",
+        response = client.completions.create(
+            model="gpt-3.5-turbo-instruct",
             prompt=user_input,
             max_tokens=150,
-            n=1,
             temperature=0.7
         )
         return response.choices[0].text.strip()
     except Exception as e:
         return f"An error occurred: {e}"
-
-
-@bot.message_handler(func=lambda message: True)
-def echo_all(message):
-    bot.reply_to(message,
-                 f"Hi, You said: {message.text}")
 
 
 # Started bot
