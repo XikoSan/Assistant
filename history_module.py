@@ -1,5 +1,5 @@
 chat_history = [
-    {"role": "assistant", "content": "Привет! Чем могу помочь?"},
+   
 ]
 
 def build_chat_history(history) -> str:
